@@ -1,0 +1,90 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Client {
+  id        String   @id @default(cuid())
+  name      String
+  email     String?
+  phone     String?
+  address   String?
+  city      String?
+  postcode  String?
+  country   String   @default("United Kingdom")
+  vatNumber String?
+  invoices  Invoice[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Invoice {
+  id            String        @id @default(cuid())
+  invoiceNumber String        @unique
+  date          DateTime
+  dueDate       DateTime
+  clientId      String?       // Optional for walk-ins
+  client        Client?       @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  items         InvoiceItem[]
+  status        String        @default("DRAFT") // DRAFT, SENT, PAID, OVERDUE, CANCELLED
+  currency      String        @default("GBP")
+  
+  // Computed totals (stored for snapshotting)
+  subTotal      Float         @default(0)
+  totalVat      Float         @default(0)
+  total         Float         @default(0)
+
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+model InvoiceItem {
+  id          String  @id @default(cuid())
+  description String
+  quantity    Float
+  unitPrice   Float
+  vatRate     Float   @default(20) // Successive standard rate
+  amount      Float   // quantity * unitPrice
+  
+  invoiceId   String
+  invoice     Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  
+  // Link to product if selected from inventory
+  productId   String?
+  product     Product? @relation(fields: [productId], references: [id])
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  price       Float
+  stock       Int      @default(0)
+  sku         String?  @unique // Barcode
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  invoiceItems InvoiceItem[]
+}
+
+model Settings {
+  id              String @id @default("settings")
+  companyName     String
+  companyAddress  String?
+  companyEmail    String?
+  companyPhone    String?
+  vatNumber       String?
+  bankName        String?
+  sortCode        String?
+  accountNumber   String?
+  defaultVatRate  Float @default(20)
+  currencySymbol  String @default("£")
+  invoiceTerms    String?
+}
