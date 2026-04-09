@@ -1,4 +1,5 @@
 import { getInvoices } from "@/actions/invoices"
+import { getSettings } from "@/actions/settings"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
@@ -9,7 +10,8 @@ import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
 
 export default async function InvoicesPage() {
-    const invoices = await getInvoices()
+    const [invoices, settings] = await Promise.all([getInvoices(), getSettings()])
+    const currencySymbol = settings?.currencySymbol ?? "£"
 
     return (
         <div className="p-8 space-y-8 bg-gray-50/50 min-h-screen">
@@ -50,7 +52,7 @@ export default async function InvoicesPage() {
                                 <TableRow key={invoice.id} className="hover:bg-gray-50/50 border-gray-100 transition-colors group">
                                     <TableCell className="font-semibold text-gray-900 pl-6 py-4">{invoice.invoiceNumber}</TableCell>
                                     <TableCell className="text-gray-600 py-4">{invoice.date.toLocaleDateString()}</TableCell>
-                                    <TableCell className="text-gray-900 font-medium py-4">{invoice.client.name}</TableCell>
+                                    <TableCell className="text-gray-900 font-medium py-4">{invoice.client?.name ?? "Walk-in"}</TableCell>
                                     <TableCell className="py-4">
                                         <div className={cn(
                                             "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border",
@@ -61,7 +63,7 @@ export default async function InvoicesPage() {
                                             {invoice.status}
                                         </div>
                                     </TableCell>
-                                    <TableCell className="text-right font-bold text-gray-900 py-4">{formatCurrency(invoice.total)}</TableCell>
+                                    <TableCell className="text-right font-bold text-gray-900 py-4">{formatCurrency(invoice.total, currencySymbol)}</TableCell>
                                     <TableCell className="text-right pr-6 py-4">
                                         <Link
                                             href={`/invoices/${invoice.id}`}

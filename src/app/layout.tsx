@@ -7,8 +7,8 @@ import { Toaster } from "@/components/ui/sonner";
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
-  title: "Billing UK",
-  description: "Billing software for UK businesses",
+  title: "Adrinix",
+  description: "Adrinix Billing Software",
 };
 
 export default function RootLayout({

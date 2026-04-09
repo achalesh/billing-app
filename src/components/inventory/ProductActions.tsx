@@ -25,9 +25,10 @@ import { ProductDialog } from "./ProductDialog"
 
 interface ProductActionsProps {
     product: any // Replace with proper type
+    currencySymbol?: string
 }
 
-export function ProductActions({ product }: ProductActionsProps) {
+export function ProductActions({ product, currencySymbol = "£" }: ProductActionsProps) {
     const [open, setOpen] = useState(false)
     const [showDeleteDialog, setShowDeleteDialog] = useState(false)
 
@@ -54,6 +55,7 @@ export function ProductActions({ product }: ProductActionsProps) {
                         <ProductDialog
                             product={product}
                             mode="edit"
+                            currencySymbol={currencySymbol}
                             trigger={
                                 <div className="flex w-full items-center">
                                     Edit

@@ -18,7 +18,7 @@ export const Receipt = forwardRef<HTMLDivElement, ReceiptProps>(({ invoice, sett
                 <h1 className="font-bold text-lg mb-1">{settings?.companyName || "STORE NAME"}</h1>
                 <p>{settings?.companyAddress}</p>
                 <p>{settings?.companyPhone}</p>
-                {settings?.vatNumber && <p>VAT: {settings.vatNumber}</p>}
+                {settings?.vatNumber && <p>{settings?.taxName ?? "Tax"}: {settings.vatNumber}</p>}
             </div>
 
             <div className="mb-4 border-b border-black border-dashed pb-2">
@@ -50,11 +50,11 @@ export const Receipt = forwardRef<HTMLDivElement, ReceiptProps>(({ invoice, sett
             <div className="border-t border-black border-dashed pt-2 space-y-1">
                 <div className="flex justify-between font-bold">
                     <span>Total</span>
-                    <span>{formatCurrency(invoice.total)}</span>
+                    <span>{formatCurrency(invoice.total, settings?.currencySymbol ?? "£")}</span>
                 </div>
                 <div className="flex justify-between text-[10px]">
-                    <span>VAT (Included)</span>
-                    <span>{formatCurrency(invoice.totalVat)}</span>
+                    <span>{settings?.taxName ?? "Tax"} (Included)</span>
+                    <span>{formatCurrency(invoice.totalVat, settings?.currencySymbol ?? "£")}</span>
                 </div>
             </div>
 

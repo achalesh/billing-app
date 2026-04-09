@@ -32,9 +32,12 @@ import { createInvoice, updateInvoice } from "@/actions/invoices"
 interface InvoiceFormProps {
     clients: Client[]
     initialData?: any // Validated by schema regardless
+    currencySymbol?: string
+    taxName?: string
+    defaultVatRate?: number
 }
 
-export function InvoiceForm({ clients, initialData }: InvoiceFormProps) {
+export function InvoiceForm({ clients, initialData, currencySymbol = "£", taxName = "Tax", defaultVatRate = 20 }: InvoiceFormProps) {
     const router = useRouter()
     const form = useForm<InvoiceFormValues>({
         resolver: zodResolver(invoiceSchema) as any,
@@ -55,7 +58,7 @@ export function InvoiceForm({ clients, initialData }: InvoiceFormProps) {
             dueDate: new Date(),
             status: "DRAFT",
             items: [
-                { description: "Service", quantity: 1, unitPrice: 0, vatRate: 20 }
+                { description: "Service", quantity: 1, unitPrice: 0, vatRate: defaultVatRate }
             ],
         },
     })
@@ -212,15 +215,15 @@ export function InvoiceForm({ clients, initialData }: InvoiceFormProps) {
                         <CardContent className="space-y-2">
                             <div className="flex justify-between">
                                 <span className="text-muted-foreground">Subtotal:</span>
-                                <span className="font-medium">{formatCurrency(subTotal)}</span>
+                                <span className="font-medium">{formatCurrency(subTotal, currencySymbol)}</span>
                             </div>
                             <div className="flex justify-between">
-                                <span className="text-muted-foreground">VAT (20%):</span>
-                                <span className="font-medium">{formatCurrency(totalVat)}</span>
+                                <span className="text-muted-foreground">{taxName}:</span>
+                                <span className="font-medium">{formatCurrency(totalVat, currencySymbol)}</span>
                             </div>
                             <div className="flex justify-between border-t pt-2 mt-2">
                                 <span className="font-bold text-lg">Total:</span>
-                                <span className="font-bold text-lg">{formatCurrency(total)}</span>
+                                <span className="font-bold text-lg">{formatCurrency(total, currencySymbol)}</span>
                             </div>
                             <Button type="submit" className="w-full mt-4" size="lg">Create Invoice</Button>
                         </CardContent>
@@ -273,7 +276,7 @@ export function InvoiceForm({ clients, initialData }: InvoiceFormProps) {
                                         name={`items.${index}.unitPrice`}
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel className={index !== 0 ? "sr-only" : ""}>Price (£)</FormLabel>
+                                                <FormLabel className={index !== 0 ? "sr-only" : ""}>Price ({currencySymbol})</FormLabel>
                                                 <FormControl>
                                                     <Input type="number" step="0.01" {...field} />
                                                 </FormControl>
@@ -288,7 +291,7 @@ export function InvoiceForm({ clients, initialData }: InvoiceFormProps) {
                                         name={`items.${index}.vatRate`}
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel className={index !== 0 ? "sr-only" : ""}>VAT (%)</FormLabel>
+                                                <FormLabel className={index !== 0 ? "sr-only" : ""}>{taxName} (%)</FormLabel>
                                                 <FormControl>
                                                     <Input type="number" {...field} />
                                                 </FormControl>

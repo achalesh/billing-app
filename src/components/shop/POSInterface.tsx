@@ -14,13 +14,16 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 
 interface POSInterfaceProps {
     products: Product[]
+    currencySymbol?: string
+    taxName?: string
+    defaultTaxRate?: number
 }
 
 interface CartItem extends Product {
     quantity: number
 }
 
-export function POSInterface({ products }: POSInterfaceProps) {
+export function POSInterface({ products, currencySymbol = "£", taxName = "Tax", defaultTaxRate = 20 }: POSInterfaceProps) {
     const [search, setSearch] = useState("")
     const [cart, setCart] = useState<CartItem[]>([])
     const [loading, setLoading] = useState(false)
@@ -57,7 +60,7 @@ export function POSInterface({ products }: POSInterfaceProps) {
     }
 
     const subTotal = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0)
-    const vatTotal = subTotal * 0.20 // Standard UK VAT
+    const vatTotal = subTotal * (defaultTaxRate / 100)
     const total = subTotal + vatTotal
 
     const handleCheckout = async () => {
@@ -73,7 +76,7 @@ export function POSInterface({ products }: POSInterfaceProps) {
                     description: item.name,
                     quantity: item.quantity,
                     unitPrice: item.price,
-                    vatRate: 20
+                    vatRate: defaultTaxRate
                 }))
             })
             toast.success("Transaction completed!")
@@ -114,7 +117,7 @@ export function POSInterface({ products }: POSInterfaceProps) {
                                         <p className="text-xs text-muted-foreground">{product.sku}</p>
                                     </div>
                                     <div className="flex justify-between items-end">
-                                        <div className="font-bold text-lg text-indigo-600">{formatCurrency(product.price)}</div>
+                                        <div className="font-bold text-lg text-indigo-600">{formatCurrency(product.price, currencySymbol)}</div>
                                         <div className={`text-xs px-2 py-0.5 rounded-full ${product.stock > 0 ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'}`}>
                                             {product.stock} in stock
                                         </div>
@@ -146,7 +149,7 @@ export function POSInterface({ products }: POSInterfaceProps) {
                                 <div key={item.id} className="flex justify-between items-center bg-gray-50 p-2 rounded-lg">
                                     <div className="flex-1 min-w-0 mr-2">
                                         <div className="font-medium text-sm truncate">{item.name}</div>
-                                        <div className="text-xs text-muted-foreground">{formatCurrency(item.price)}</div>
+                                        <div className="text-xs text-muted-foreground">{formatCurrency(item.price, currencySymbol)}</div>
                                     </div>
                                     <div className="flex items-center space-x-2">
                                         <Button variant="outline" size="icon" className="h-6 w-6" onClick={() => updateQuantity(item.id, -1)}>
@@ -170,15 +173,15 @@ export function POSInterface({ products }: POSInterfaceProps) {
                     <div className="space-y-2 text-sm">
                         <div className="flex justify-between">
                             <span className="text-muted-foreground">Subtotal</span>
-                            <span>{formatCurrency(subTotal)}</span>
+                            <span>{formatCurrency(subTotal, currencySymbol)}</span>
                         </div>
                         <div className="flex justify-between">
-                            <span className="text-muted-foreground">VAT (20%)</span>
-                            <span>{formatCurrency(vatTotal)}</span>
+                            <span className="text-muted-foreground">{taxName} ({defaultTaxRate}%)</span>
+                            <span>{formatCurrency(vatTotal, currencySymbol)}</span>
                         </div>
                         <div className="flex justify-between font-bold text-lg pt-2 border-t text-gray-900">
                             <span>Total</span>
-                            <span>{formatCurrency(total)}</span>
+                            <span>{formatCurrency(total, currencySymbol)}</span>
                         </div>
                     </div>
                     <Button

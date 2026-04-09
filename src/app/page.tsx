@@ -1,13 +1,15 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DollarSign, Users, FileText, Activity, ArrowUpRight, CreditCard } from "lucide-react";
 import { getDashboardStats } from "@/actions/dashboard";
+import { getSettings } from "@/actions/settings";
 import { formatCurrency } from "@/lib/format";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 export default async function Home() {
-  const stats = await getDashboardStats()
+  const [stats, settings] = await Promise.all([getDashboardStats(), getSettings()])
+  const currencySymbol = settings?.currencySymbol ?? "£"
 
   return (
     <div className="p-8 space-y-8 bg-gray-50/50 min-h-screen">
@@ -35,7 +37,7 @@ export default async function Home() {
             </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-gray-900">{formatCurrency(stats.totalRevenue)}</div>
+            <div className="text-2xl font-bold text-gray-900">{formatCurrency(stats.totalRevenue, currencySymbol)}</div>
             <p className="text-xs text-muted-foreground mt-1 flex items-center">
               <span className="text-emerald-600 flex items-center mr-1">
                 <ArrowUpRight className="h-3 w-3 mr-0.5" /> +20.1%
@@ -69,7 +71,7 @@ export default async function Home() {
             </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-gray-900">{formatCurrency(stats.outstanding)}</div>
+            <div className="text-2xl font-bold text-gray-900">{formatCurrency(stats.outstanding, currencySymbol)}</div>
             <p className="text-xs text-muted-foreground mt-1">
               Unpaid invoices
             </p>
@@ -118,7 +120,7 @@ export default async function Home() {
                       }`}>
                       {invoice.status}
                     </div>
-                    <div className="font-bold text-gray-900 w-24 text-right">{formatCurrency(invoice.total)}</div>
+                    <div className="font-bold text-gray-900 w-24 text-right">{formatCurrency(invoice.total, currencySymbol)}</div>
                   </div>
                 </div>
               ))}

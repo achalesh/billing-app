@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -30,9 +31,9 @@ const routes = [
         color: "text-pink-700",
     },
     {
-        label: "Inventory",
+        label: "Products",
         icon: Package,
-        href: "/inventory",
+        href: "/products",
         color: "text-emerald-500",
     },
     {
@@ -56,14 +57,16 @@ export function Sidebar() {
         <div className="space-y-4 py-4 flex flex-col h-full bg-slate-900/50 backdrop-blur-xl border-r border-white/5 text-white print:hidden">
             <div className="px-3 py-2 flex-1">
                 <Link href="/" className="flex items-center pl-3 mb-14">
-                    <div className="relative w-8 h-8 mr-4">
-                        <div className="absolute inset-0 bg-gradient-to-tr from-violet-600 to-indigo-600 rounded-lg blur-[2px] opacity-70"></div>
-                        <div className="relative w-full h-full bg-slate-950 rounded-lg border border-white/10 flex items-center justify-center">
-                            <span className="font-bold text-lg bg-gradient-to-br from-white to-gray-400 bg-clip-text text-transparent">B</span>
-                        </div>
+                    <div className="relative w-8 h-8 mr-3">
+                        <Image 
+                            src="/logo.png" 
+                            alt="Adrinix Logo" 
+                            fill
+                            className="object-contain"
+                        />
                     </div>
                     <h1 className="text-xl font-bold bg-gradient-to-br from-white to-gray-400 bg-clip-text text-transparent">
-                        Billing UK
+                        Adrinix
                     </h1>
                 </Link>
                 <div className="space-y-1">

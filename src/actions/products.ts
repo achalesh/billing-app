@@ -20,7 +20,7 @@ export async function createProduct(data: ProductFormValues) {
         await prisma.product.create({
             data: validated,
         })
-        revalidatePath("/inventory")
+        revalidatePath("/products")
         return { success: true }
     } catch (error) {
         console.error("Failed to create product:", error)
@@ -35,7 +35,7 @@ export async function updateProduct(id: string, data: ProductFormValues) {
             where: { id },
             data: validated,
         })
-        revalidatePath("/inventory")
+        revalidatePath("/products")
         return { success: true }
     } catch (error) {
         console.error("Failed to update product:", error)
@@ -48,7 +48,7 @@ export async function deleteProduct(id: string) {
         await prisma.product.delete({
             where: { id },
         })
-        revalidatePath("/inventory")
+        revalidatePath("/products")
         return { success: true }
     } catch (error) {
         console.error("Failed to delete product:", error)

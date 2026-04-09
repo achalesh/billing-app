@@ -84,6 +84,8 @@ model Settings {
   bankName        String?
   sortCode        String?
   accountNumber   String?
+  country         String @default("United Kingdom")
+  taxName         String @default("VAT")
   defaultVatRate  Float @default(20)
   currencySymbol  String @default("£")
   invoiceTerms    String?

@@ -21,5 +21,10 @@ export async function updateSettings(data: SettingsFormValues) {
     })
 
     revalidatePath("/settings")
+    revalidatePath("/")
+    revalidatePath("/invoices")
+    revalidatePath("/invoices/[id]", "page")
+    revalidatePath("/shop")
+    revalidatePath("/products")
     return { success: true }
 }

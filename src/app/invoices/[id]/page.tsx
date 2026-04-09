@@ -1,28 +1,26 @@
 import { getInvoice } from "@/actions/invoices"
-import { Button } from "@/components/ui/button"
+import { getSettings } from "@/actions/settings"
 import { formatCurrency } from "@/lib/format"
 import { format } from "date-fns"
-import { Printer } from "lucide-react"
 import { notFound } from "next/navigation"
-import { prisma } from "@/lib/db"
-
 import { PrintButton } from "@/components/invoices/PrintButton"
-
-interface InvoicePageProps {
-    params: {
-        id: string
-    }
-}
-
 import { InvoiceActions } from "@/components/invoices/InvoiceActions"
 
-// ... existing imports
+interface InvoicePageProps {
+    params: Promise<{ id: string }>
+}
 
 export default async function InvoicePage({ params }: InvoicePageProps) {
-    const invoice = await getInvoice(params.id)
-    const settings = await prisma.settings.findUnique({ where: { id: "settings" } })
+    const { id } = await params
+    const [invoice, settings] = await Promise.all([
+        getInvoice(id),
+        getSettings()
+    ])
 
     if (!invoice) return notFound()
+
+    const currencySymbol = settings?.currencySymbol ?? "£"
+    const taxName = settings?.taxName ?? "Tax"
 
     return (
         <div className="p-8 bg-gray-50/50 min-h-screen">
@@ -50,7 +48,7 @@ export default async function InvoicePage({ params }: InvoicePageProps) {
                             <div className="mt-2 text-sm text-gray-500">
                                 {settings?.companyEmail && <p>{settings.companyEmail}</p>}
                                 {settings?.companyPhone && <p>{settings.companyPhone}</p>}
-                                {settings?.vatNumber && <p>VAT Reg: {settings.vatNumber}</p>}
+                                {settings?.vatNumber && <p>{taxName} Reg: {settings.vatNumber}</p>}
                             </div>
                         </div>
                     </div>
@@ -59,14 +57,14 @@ export default async function InvoicePage({ params }: InvoicePageProps) {
                     <div className="grid grid-cols-2 gap-8 py-8 border-b">
                         <div>
                             <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Bill To</h4>
-                            <p className="font-bold text-gray-900">{invoice.client.name}</p>
+                            <p className="font-bold text-gray-900">{invoice.client?.name ?? "Walk-in Customer"}</p>
                             <p className="text-gray-500 text-sm whitespace-pre-line mt-1">
-                                {invoice.client.address}
-                                {invoice.client.city && `\n${invoice.client.city}`}
-                                {invoice.client.postcode && `\n${invoice.client.postcode}`}
-                                {invoice.client.country && `\n${invoice.client.country}`}
+                                {invoice.client?.address}
+                                {invoice.client?.city && `\n${invoice.client.city}`}
+                                {invoice.client?.postcode && `\n${invoice.client.postcode}`}
+                                {invoice.client?.country && `\n${invoice.client.country}`}
                             </p>
-                            {invoice.client.vatNumber && <p className="text-sm text-gray-500 mt-2">VAT: {invoice.client.vatNumber}</p>}
+                            {invoice.client?.vatNumber && <p className="text-sm text-gray-500 mt-2">{taxName}: {invoice.client.vatNumber}</p>}
                         </div>
                         <div className="grid grid-cols-2 gap-4">
                             <div>
@@ -94,7 +92,7 @@ export default async function InvoicePage({ params }: InvoicePageProps) {
                                     <th className="py-3 font-semibold text-gray-500 text-xs uppercase tracking-wider">Description</th>
                                     <th className="py-3 font-semibold text-gray-500 text-xs uppercase tracking-wider text-right">Qty</th>
                                     <th className="py-3 font-semibold text-gray-500 text-xs uppercase tracking-wider text-right">Price</th>
-                                    <th className="py-3 font-semibold text-gray-500 text-xs uppercase tracking-wider text-right">VAT</th>
+                                    <th className="py-3 font-semibold text-gray-500 text-xs uppercase tracking-wider text-right">{taxName}</th>
                                     <th className="py-3 font-semibold text-gray-500 text-xs uppercase tracking-wider text-right">Amount</th>
                                 </tr>
                             </thead>
@@ -103,9 +101,9 @@ export default async function InvoicePage({ params }: InvoicePageProps) {
                                     <tr key={item.id}>
                                         <td className="py-4 text-sm text-gray-900">{item.description}</td>
                                         <td className="py-4 text-sm text-gray-500 text-right">{item.quantity}</td>
-                                        <td className="py-4 text-sm text-gray-500 text-right">{formatCurrency(item.unitPrice)}</td>
+                                        <td className="py-4 text-sm text-gray-500 text-right">{formatCurrency(item.unitPrice, currencySymbol)}</td>
                                         <td className="py-4 text-sm text-gray-500 text-right">{item.vatRate}%</td>
-                                        <td className="py-4 text-sm text-gray-900 text-right font-medium">{formatCurrency(item.amount)}</td>
+                                        <td className="py-4 text-sm text-gray-900 text-right font-medium">{formatCurrency(item.amount, currencySymbol)}</td>
                                     </tr>
                                 ))}
                             </tbody>
@@ -117,15 +115,15 @@ export default async function InvoicePage({ params }: InvoicePageProps) {
                         <div className="w-64 space-y-3">
                             <div className="flex justify-between text-sm text-gray-500">
                                 <span>Subtotal</span>
-                                <span>{formatCurrency(invoice.subTotal)}</span>
+                                <span>{formatCurrency(invoice.subTotal, currencySymbol)}</span>
                             </div>
                             <div className="flex justify-between text-sm text-gray-500">
-                                <span>VAT Total</span>
-                                <span>{formatCurrency(invoice.totalVat)}</span>
+                                <span>{taxName} Total</span>
+                                <span>{formatCurrency(invoice.totalVat, currencySymbol)}</span>
                             </div>
                             <div className="flex justify-between text-lg font-bold text-gray-900 border-t pt-3">
                                 <span>Total</span>
-                                <span>{formatCurrency(invoice.total)}</span>
+                                <span>{formatCurrency(invoice.total, currencySymbol)}</span>
                             </div>
                         </div>
                     </div>
