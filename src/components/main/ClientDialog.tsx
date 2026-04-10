@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { createClient, updateClient } from "@/actions/clients"
+import { createClient, updateClient } from "@/services/clients"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -44,18 +44,13 @@ export function ClientDialog({ client, mode = "create", trigger }: ClientDialogP
     })
 
     async function onSubmit(data: ClientFormValues) {
-        const formData = new FormData()
-        Object.entries(data).forEach(([key, value]) => {
-            formData.append(key, (value as string) || "")
-        })
-
         try {
             if (mode === "create") {
-                await createClient(formData)
+                await createClient(data)
                 toast.success("Client created successfully")
             } else {
                 if (!client?.id) return
-                await updateClient(client.id, formData)
+                await updateClient(client.id, data)
                 toast.success("Client updated successfully")
             }
             setOpen(false)

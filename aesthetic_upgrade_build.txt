@@ -1,0 +1,85 @@
+Creating Static WebApp Deployment Package...
+Building project (Static Export)...
+
+> billing-app@0.1.0 build
+> prisma generate && next build
+
+Environment variables loaded from .env
+Prisma schema loaded from prisma\schema.prisma
+
+Γ£ö Generated Prisma Client (v6.19.2) to .\node_modules\@prisma\client in 121ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+Tip: Need your database queries to be 1000x faster? Accelerate offers you that and more: https://pris.ly/tip-2-accelerate
+
+Γû▓ Next.js 16.1.6 (Turbopack)
+- Environments: .env.local, .env
+
+  Creating an optimized production build ...
+Error: Cannot apply unknown utility class `premium-gradient`
+    [at onInvalidCandidate (E:\Project\Web\AdhriTech_Tools\Billing\billing-app\node_modules\tailwindcss\dist\lib.js:21:1511)]
+    [at Te (E:\Project\Web\AdhriTech_Tools\Billing\billing-app\node_modules\tailwindcss\dist\lib.js:16:36326)]
+    [at E:\Project\Web\AdhriTech_Tools\Billing\billing-app\node_modules\tailwindcss\dist\lib.js:21:355]
+    [at Rr (E:\Project\Web\AdhriTech_Tools\Billing\billing-app\node_modules\tailwindcss\dist\lib.js:3:1718)]
+    [at _ (E:\Project\Web\AdhriTech_Tools\Billing\billing-app\node_modules\tailwindcss\dist\lib.js:3:1377)]
+    [at $e (E:\Project\Web\AdhriTech_Tools\Billing\billing-app\node_modules\tailwindcss\dist\lib.js:21:172)]
+    [at un (E:\Project\Web\AdhriTech_Tools\Billing\billing-app\node_modules\tailwindcss\dist\lib.js:38:294)]
+    [at async cn (E:\Project\Web\AdhriTech_Tools\Billing\billing-app\node_modules\tailwindcss\dist\lib.js:38:631)]
+    [at async Xr (E:\Project\Web\AdhriTech_Tools\Billing\billing-app\node_modules\@tailwindcss\node\dist\index.js:10:3417)]
+    [at async I (E:\Project\Web\AdhriTech_Tools\Billing\billing-app\node_modules\@tailwindcss\postcss\dist\index.js:10:3977)]
+
+> Build error occurred
+Error: Turbopack build failed with 2 errors:
+./src/app/globals.css
+Error evaluating Node.js code
+CssSyntaxError: tailwindcss: E:\Project\Web\AdhriTech_Tools\Billing\billing-app\src\app\globals.css:1:1: Cannot apply unknown utility class `premium-gradient`
+    at Input.error (node_modules/postcss/lib/input.js:135:16) [E:\Project\Web\AdhriTech_Tools\Billing\billing-app\.next\build\chunks\node_modules_fe693df6._.js:4651:22]
+    at Root.error (node_modules/postcss/lib/node.js:146:32) [E:\Project\Web\AdhriTech_Tools\Billing\billing-app\.next\build\chunks\node_modules_fe693df6._.js:928:38]
+    [at Object.Once (E:\Project\Web\AdhriTech_Tools\Billing\billing-app\node_modules\@tailwindcss\postcss\dist\index.js:10:6911)]
+    at async LazyResult.runAsync (node_modules/postcss/lib/lazy-result.js:293:11) [E:\Project\Web\AdhriTech_Tools\Billing\billing-app\.next\build\chunks\node_modules_fe693df6._.js:6206:21]
+    at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts:70:34) [E:\Project\Web\AdhriTech_Tools\Billing\billing-app\.next\build\chunks\[root-of-the-server]__51225daf._.js:146:36]
+    at async run (turbopack:///[turbopack-node]/ipc/evaluate.ts:92:23) [E:\Project\Web\AdhriTech_Tools\Billing\billing-app\.next\build\chunks\[root-of-the-server]__974941ed._.js:443:31]
+
+Import trace:
+  Client Component Browser:
+    ./src/app/globals.css [Client Component Browser]
+    ./src/app/layout.tsx [Server Component]
+
+
+./src/app/(marketing)/page.tsx:7:1
+Module not found: Can't resolve 'framer-motion'
+   5 | import { Button } from "@/components/ui/button";
+   6 | import { ArrowRight, CheckCircle2, Zap, Shield, BarChart3, Globe } from "lucide-react";
+>  7 | import { motion } from "framer-motion";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   8 |
+   9 | export default function LandingPage() {
+  10 |   return (
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/(marketing)/page.tsx [Client Component Browser]
+    ./src/app/(marketing)/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/(marketing)/page.tsx [Client Component SSR]
+    ./src/app/(marketing)/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+    at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts:70:34) [E:\Project\Web\AdhriTech_Tools\Billing\billing-app\.next\build\chunks\[root-of-the-server]__51225daf._.js:146:36])
+    at async run (turbopack:///[turbopack-node]/ipc/evaluate.ts:92:23) [E:\Project\Web\AdhriTech_Tools\Billing\billing-app\.next\build\chunks\[root-of-the-server]__974941ed._.js:443:31])
+    at <unknown> (./src/app/(marketing)/page.tsx:7:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+Static export successful. Packaging 'out' folder...
+
+SUCCESS! Your Static WebApp is ready.
+Location: E:\Project\Web\AdhriTech_Tools\Billing\billing-app\..\billing-app-static.zip
+
+Next Steps for GoDaddy:
+1. Upload and Extract this ZIP in your 'public_html' folder.
+2. That's it! No Node.js configuration required.

@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { createProduct, updateProduct } from "@/actions/products"
+import { createProduct, updateProduct } from "@/services/products"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { productSchema, type ProductFormValues } from "@/lib/schemas"

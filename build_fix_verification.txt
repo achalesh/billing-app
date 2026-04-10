@@ -1,0 +1,55 @@
+Creating Static WebApp Deployment Package...
+Building project (Static Export)...
+
+> billing-app@0.1.0 build
+> prisma generate && next build
+
+Environment variables loaded from .env
+Prisma schema loaded from prisma\schema.prisma
+
+Γ£ö Generated Prisma Client (v6.19.2) to .\node_modules\@prisma\client in 114ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+Tip: Want to turn off tips and other hints? https://pris.ly/tip-4-nohints
+
+Γû▓ Next.js 16.1.6 (Turbopack)
+- Environments: .env.local, .env
+
+  Creating an optimized production build ...
+Γ£ô Compiled successfully in 6.7s
+  Running TypeScript ...
+  Collecting page data using 11 workers ...
+  Generating static pages using 11 workers (0/15) ...
+  Generating static pages using 11 workers (3/15) 
+  Generating static pages using 11 workers (7/15) 
+  Generating static pages using 11 workers (11/15) 
+Γ£ô Generating static pages using 11 workers (15/15) in 736.6ms
+  Finalizing page optimization ...
+
+Route (app)
+Γöî Γùï /
+Γö£ Γùï /_not-found
+Γö£ Γùï /clients
+Γö£ Γùï /dashboard
+Γö£ Γùï /enterprise
+Γö£ Γùï /invoices
+Γö£ Γùï /invoices/edit
+Γö£ Γùï /invoices/new
+Γö£ Γùï /invoices/view
+Γö£ Γùï /products
+Γö£ Γùï /products/new
+Γö£ Γùï /settings
+Γöö Γùï /shop
+
+
+Γùï  (Static)  prerendered as static content
+
+Static export successful. Packaging 'out' folder...
+
+SUCCESS! Your Static WebApp is ready.
+Location: E:\Project\Web\AdhriTech_Tools\Billing\billing-app\..\billing-app-static.zip
+
+Next Steps for GoDaddy:
+1. Upload and Extract this ZIP in your 'public_html' folder.
+2. That's it! No Node.js configuration required.

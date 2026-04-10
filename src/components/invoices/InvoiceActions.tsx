@@ -18,7 +18,7 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { deleteInvoice, updateInvoiceStatus } from "@/actions/invoices"
+import { deleteInvoice, updateInvoiceStatus } from "@/services/invoices"
 import { Edit, MoreVertical, Trash, CheckCircle } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
@@ -52,7 +52,7 @@ export function InvoiceActions({ id, status }: InvoiceActionsProps) {
             setIsLoading(true)
             await updateInvoiceStatus(id, newStatus)
             toast.success("Status updated")
-            router.refresh()
+            window.location.reload()
         } catch (error) {
             toast.error("Something went wrong")
         } finally {
@@ -83,7 +83,7 @@ export function InvoiceActions({ id, status }: InvoiceActionsProps) {
             </DropdownMenu>
 
             <Button variant="outline" size="sm" asChild>
-                <Link href={`/invoices/${id}/edit`}>
+                <Link href={`/invoices/edit?id=${id}`}>
                     <Edit className="h-4 w-4 mr-2" />
                     Edit
                 </Link>

@@ -7,7 +7,7 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { deleteProduct } from "@/actions/products"
+import { deleteProduct } from "@/services/products"
 import { MoreHorizontal, Trash } from "lucide-react"
 import { toast } from "sonner"
 import {

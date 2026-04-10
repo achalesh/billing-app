@@ -27,10 +27,10 @@ import { toast } from "sonner"
 import { formatCurrency } from "@/lib/format"
 import { useEffect } from "react"
 
-import { createInvoice, updateInvoice } from "@/actions/invoices"
+import { createInvoice, updateInvoice } from "@/services/invoices"
 
 interface InvoiceFormProps {
-    clients: Client[]
+    clients: any[] // Client[] type removed to avoid Prisma dependency
     initialData?: any // Validated by schema regardless
     currencySymbol?: string
     taxName?: string

@@ -1,0 +1,42 @@
+Creating Static WebApp Deployment Package...
+Building project (Static Export)...
+
+> billing-app@0.1.0 build
+> prisma generate && next build
+
+Environment variables loaded from .env
+Prisma schema loaded from prisma\schema.prisma
+
+Γ£ö Generated Prisma Client (v6.19.2) to .\node_modules\@prisma\client in 125ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+Tip: Interested in query caching in just a few lines of code? Try Accelerate today! https://pris.ly/tip-3-accelerate
+
+Γû▓ Next.js 16.1.6 (Turbopack)
+- Environments: .env.local, .env
+
+  Creating an optimized production build ...
+Γ£ô Compiled successfully in 7.4s
+  Running TypeScript ...
+Failed to compile.
+
+./src/components/layout/Sidebar.tsx:47:15
+Type error: JSX element class does not support attributes because it does not have a 'props' property.
+
+  45 |           <div className="flex items-center gap-3 px-2 mb-10">
+  46 |             <div className="relative h-10 w-10">
+> 47 |               <Image 
+     |               ^
+  48 |                 src="/adrinix/logo.png" 
+  49 |                 alt="Adrinix Logo" 
+  50 |                 fill
+Next.js build worker exited with code: 1 and signal: null
+Static export successful. Packaging 'out' folder...
+
+SUCCESS! Your Static WebApp is ready.
+Location: E:\Project\Web\AdhriTech_Tools\Billing\billing-app\..\billing-app-static.zip
+
+Next Steps for GoDaddy:
+1. Upload and Extract this ZIP in your 'public_html' folder.
+2. That's it! No Node.js configuration required.

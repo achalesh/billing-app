@@ -8,19 +8,23 @@ import { Button } from "@/components/ui/button"
 import { Search, ShoppingCart, Trash2, Plus, Minus, CreditCard } from "lucide-react"
 import { formatCurrency } from "@/lib/format"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { createInvoice } from "@/actions/invoices"
+import { createInvoice } from "@/services/invoices"
 import { toast } from "sonner"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 
 interface POSInterfaceProps {
-    products: Product[]
+    products: any[]
     currencySymbol?: string
     taxName?: string
     defaultTaxRate?: number
 }
 
-interface CartItem extends Product {
+interface CartItem {
+    id: string
+    name: string
+    price: number
     quantity: number
+    sku?: string | null
+    stock: number
 }
 
 export function POSInterface({ products, currencySymbol = "£", taxName = "Tax", defaultTaxRate = 20 }: POSInterfaceProps) {

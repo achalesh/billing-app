@@ -1,0 +1,13 @@
+RewriteEngine On
+RewriteBase /adrinix/
+
+# Handle Next.js Static Export URLs
+# This ensures that /enterprise correctly maps to /enterprise/index.html
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)/?$ $1/index.html [L,QSA]
+
+# Fix for assets and internal _next files
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^_next/(.*)$ _next/$1 [L]
